@@ -1,5 +1,7 @@
 module Utils exposing (..)
 
+-- rename to Conversion
+
 import Base64
 import UrlBase64
 
