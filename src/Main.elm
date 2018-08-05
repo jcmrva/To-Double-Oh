@@ -1,13 +1,12 @@
 module Main exposing (..)
 
 import Html exposing (..)
-import Domain exposing (stories, Actor(..))
+import Bond exposing (..)
 
 
 --import Html.Attributes exposing (..)
 --import Html.Events exposing (..)
 --import Http
--- NEW label if year >= current - 1
 -- UPDATE
 -- favorite film/book - only one of each
 --type alias Favorites =     { film : Film, book : Book }
@@ -22,39 +21,21 @@ type Msg
     | Toggled
 
 
-type alias FilmInfo =
-    { title : String
-    , year : Int
-    , actor : Actor
+type alias Model =
+    { selected : List Bond.Version
     }
 
 
-model : FilmInfo
+model : Model
 model =
-    FilmInfo "From Russia With Love" 1962 (Connery1 "Connery")
+    { selected = []
+    }
 
 
-tableHeader : List String
-tableHeader =
-    [ "Title", "Actor", "Film Year", "Author", "Book Year" ]
-
-
-view : { a | title : String } -> Html msg
+view : a -> Html msg
 view model =
     div []
-        [ table []
-            (tr []
-                [ th [] [ text "Title" ]
-                , th [] [ text "Actor" ]
-                , th [] [ text "Film Year" ]
-                , th [] [ text "Author" ]
-                , th [] [ text "Book Year" ]
-                ]
-                :: (Domain.getTitles
-                        |> List.map (\t -> tr [] [ text t ])
-                   )
-            )
-        ]
+        []
 
 
 update : Msg -> a -> a
@@ -67,10 +48,10 @@ update msg model =
             model
 
 
-main : Program Never FilmInfo (FilmInfo -> FilmInfo)
+main : Program Never Model Msg
 main =
     Html.beginnerProgram
         { model = model
         , view = view
-        , update = update Toggled
+        , update = update
         }

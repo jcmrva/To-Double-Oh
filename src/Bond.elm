@@ -1,62 +1,5 @@
 module Bond exposing (..)
 
-
-type Actor
-    = Nelson
-    | Connery
-    | Moore
-    | Lazenby
-    | Dalton
-    | Brosnan
-    | Craig
-
-
-type Author
-    = Fleming
-
-
-type Name
-    = Actor Actor
-    | Author Author
-
-
-type Version
-    = Film Int Actor
-    | Tv Int Actor
-    | Print Int Author
-
-
-type alias Story =
-    { title : String
-    , versions : List Version
-    }
-
-
-
--- TODO flatten
-
-
-yearsActive : List Story -> Name -> ( Int, Int )
-yearsActive stories name =
-    case name of
-        Actor n ->
-            ( 1, 2 )
-
-        Author n ->
-            ( 1, 2 )
-
-
-yearsBrosnan : ( Int, Int )
-yearsBrosnan =
-    yearsActive [] (Actor Brosnan)
-
-
-yearsFleming : ( Int, Int )
-yearsFleming =
-    yearsActive [] (Author Fleming)
-
-
-
 -- source: https://en.wikipedia.org/wiki/James_Bond
 
 
@@ -153,3 +96,71 @@ stories =
         [ Film 2015 Craig
         ]
     ]
+
+
+type Actor
+    = Nelson
+    | Connery
+    | Moore
+    | Lazenby
+    | Dalton
+    | Brosnan
+    | Craig
+
+
+type Author
+    = Fleming
+
+
+type Name
+    = Actor Actor
+    | Author Author
+
+
+type Version
+    = Film Year Actor
+    | Tv Year Actor
+    | Print Year Author
+
+
+type alias Year =
+    Int
+
+
+type alias Story =
+    { title : String
+    , versions : List Version
+    }
+
+
+getName : Version -> String
+getName v =
+    case v of
+        Film y a ->
+            a |> toString
+
+        Tv y a ->
+            a |> toString
+
+        Print y a ->
+            a |> toString
+
+
+yearsActive : List Story -> Name -> ( Year, Year )
+yearsActive stories name =
+    case name of
+        Actor n ->
+            ( 1, 2 )
+
+        Author n ->
+            ( 1, 2 )
+
+
+yearsBrosnan : ( Int, Int )
+yearsBrosnan =
+    yearsActive [] (Actor Brosnan)
+
+
+yearsFleming : ( Int, Int )
+yearsFleming =
+    yearsActive [] (Author Fleming)
