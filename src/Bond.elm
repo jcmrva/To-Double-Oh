@@ -6,64 +6,64 @@ module Bond exposing (..)
 stories : List Story
 stories =
     [ Story "Dr No"
-        [ Film 1963 Connery
-        , Print 1958 Fleming
+        [ Print 1958 Fleming
+        , Film 1962 Connery
         ]
     , Story "From Russia with Love"
-        [ Film 1963 Connery
-        , Print 1957 Fleming
+        [ Print 1957 Fleming
+        , Film 1963 Connery
         ]
     , Story "Goldfinger"
-        [ Film 1964 Connery
-        , Print 1959 Fleming
+        [ Print 1959 Fleming
+        , Film 1964 Connery
         ]
     , Story "Thunderball"
-        [ Film 1965 Connery
-        , Print 1961 Fleming
+        [ Print 1961 Fleming
+        , Film 1965 Connery
         ]
     , Story "You Only Live Twice"
-        [ Film 1967 Connery
-        , Print 1964 Fleming
+        [ Print 1964 Fleming
+        , Film 1967 Connery
         ]
     , Story "On Her Majesty's Secret Service"
-        [ Film 1969 Lazenby
-        , Print 1963 Fleming
+        [ Print 1963 Fleming
+        , Film 1969 Lazenby
         ]
     , Story "Diamonds Are Forever"
-        [ Film 1971 Connery
-        , Print 1956 Fleming
+        [ Print 1956 Fleming
+        , Film 1971 Connery
         ]
     , Story "Live and Let Die"
-        [ Film 1973 Moore
-        , Print 1954 Fleming
+        [ Print 1954 Fleming
+        , Film 1973 Moore
         ]
     , Story "The Man with the Golden Gun"
-        [ Film 1974 Moore
-        , Print 1965 Fleming
+        [ Print 1965 Fleming
+        , Film 1974 Moore
         ]
     , Story "The Spy Who Loved Me"
-        [ Film 1977 Moore
-        , Print 1962 Fleming
+        [ Print 1962 Fleming
+        , Film 1977 Moore
         ]
     , Story "Moonraker"
-        [ Film 1979 Moore
-        , Print 1955 Fleming
+        [ Print 1955 Fleming
+        , Film 1979 Moore
         ]
     , Story "For Your Eyes Only"
-        [ Film 1981 Moore
-        , Print 1960 Fleming
+        [ Print 1960 Fleming
+        , Film 1981 Moore
         ]
     , Story "Octopussy"
-        [ Film 1983 Moore
-        , Print 1965 Fleming
+        [ Print 1965 Fleming
+        , Film 1983 Moore
         ]
     , Story "A View to a Kill"
-        [ Film 1985 Moore
-        , Print 1959 Fleming
+        [ Print 1959 Fleming
+        , Film 1985 Moore
         ]
     , Story "The Living Daylights"
-        [ Film 1987 Dalton
-        , Print 1962 Fleming
+        [ Print 1962 Fleming
+        , Film 1987 Dalton
         ]
     , Story "License to Kill"
         [ Film 1989 Dalton
@@ -86,8 +86,8 @@ stories =
         , Film 2006 Craig
         ]
     , Story "Quantum of Solace"
-        [ Film 2008 Craig
-        , Print 1959 Fleming
+        [ Print 1959 Fleming
+        , Film 2008 Craig
         ]
     , Story "Skyfall"
         [ Film 2012 Craig
@@ -113,8 +113,8 @@ type Author
 
 
 type Name
-    = Actor Actor
-    | Author Author
+    = ActorName Actor
+    | AuthorName Author
 
 
 type Version
@@ -146,21 +146,65 @@ getName v =
             a |> toString
 
 
-yearsActive : List Story -> Name -> ( Year, Year )
-yearsActive stories name =
-    case name of
-        Actor n ->
-            ( 1, 2 )
+hasActor : Version -> Actor -> Bool
+hasActor version actor =
+    case version of
+        Film _ a ->
+            a == actor
 
-        Author n ->
-            ( 1, 2 )
+        Tv _ a ->
+            a == actor
+
+        _ ->
+            False
 
 
-yearsBrosnan : ( Int, Int )
+hasAuthor : Version -> Author -> Bool
+hasAuthor version author =
+    case version of
+        Print _ a ->
+            a == author
+
+        _ ->
+            False
+
+
+yearsActive : List Version -> Name -> ( Year, Year )
+yearsActive versions name =
+    let
+        x =
+            1
+    in
+        case name of
+            ActorName n ->
+                ( 1, 2 )
+
+            AuthorName n ->
+                ( 1, 2 )
+
+
+yearsBrosnan : ( Year, Year )
 yearsBrosnan =
-    yearsActive [] (Actor Brosnan)
+    yearsActive [] (ActorName Brosnan)
 
 
-yearsFleming : ( Int, Int )
+yearsFleming : ( Year, Year )
 yearsFleming =
-    yearsActive [] (Author Fleming)
+    yearsActive [] (AuthorName Fleming)
+
+
+
+--yearsBrosnan |> Tuple.first |> toString
+
+
+allVersions : List Story -> List Version
+allVersions stories =
+    let
+        getVersions story versions =
+            List.append story.versions versions
+    in
+        List.foldr getVersions [] stories
+
+
+
+--stories |> allVersions |> List.take 4
