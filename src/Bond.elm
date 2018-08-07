@@ -146,8 +146,8 @@ getName v =
             a |> toString
 
 
-hasActor : Version -> Actor -> Bool
-hasActor version actor =
+hasActor : Actor -> Version -> Bool
+hasActor actor version =
     case version of
         Film _ a ->
             a == actor
@@ -169,32 +169,26 @@ hasAuthor version author =
             False
 
 
-yearsActive : List Version -> Name -> ( Year, Year )
-yearsActive versions name =
+yearsActive : List Version -> ( Year, Year )
+yearsActive versions =
     let
-        x =
-            1
+        getYear vers =
+            case vers of
+                Film y _ ->
+                    y
+
+                Print y _ ->
+                    y
+
+                Tv y _ ->
+                    y
+
+        years =
+            List.map getYear versions
     in
-        case name of
-            ActorName n ->
-                ( 1, 2 )
-
-            AuthorName n ->
-                ( 1, 2 )
-
-
-yearsBrosnan : ( Year, Year )
-yearsBrosnan =
-    yearsActive [] (ActorName Brosnan)
-
-
-yearsFleming : ( Year, Year )
-yearsFleming =
-    yearsActive [] (AuthorName Fleming)
-
-
-
---yearsBrosnan |> Tuple.first |> toString
+        ( List.minimum years |> Maybe.withDefault 0
+        , List.maximum years |> Maybe.withDefault 0
+        )
 
 
 allVersions : List Story -> List Version
@@ -207,4 +201,5 @@ allVersions stories =
 
 
 
+--stories |> allVersions |> List.filter (hasActor Brosnan) |> yearsActive
 --stories |> allVersions |> List.take 4
