@@ -136,13 +136,13 @@ type alias Story =
 getName : Version -> String
 getName v =
     case v of
-        Film y a ->
+        Film _ a ->
             a |> toString
 
-        Tv y a ->
+        Tv _ a ->
             a |> toString
 
-        Print y a ->
+        Print _ a ->
             a |> toString
 
 
@@ -169,20 +169,22 @@ hasAuthor version author =
             False
 
 
+getYear : Version -> Year
+getYear vers =
+    case vers of
+        Film y _ ->
+            y
+
+        Print y _ ->
+            y
+
+        Tv y _ ->
+            y
+
+
 yearsActive : List Version -> ( Year, Year )
 yearsActive versions =
     let
-        getYear vers =
-            case vers of
-                Film y _ ->
-                    y
-
-                Print y _ ->
-                    y
-
-                Tv y _ ->
-                    y
-
         years =
             List.map getYear versions
     in
