@@ -24,3 +24,16 @@ enc =
 dec : String -> Result String String
 dec =
     UrlBase64.decode Base64.decode
+
+
+descending : comparable -> comparable -> Order
+descending a b =
+    case compare a b of
+        LT ->
+            GT
+
+        GT ->
+            LT
+
+        EQ ->
+            EQ
